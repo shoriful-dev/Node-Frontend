@@ -17,9 +17,7 @@ import { api } from "../../helpers/axios";
 
 // ---------- ZOD SCHEMA ----------
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Name must be at least 2 characters." }),
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
 
   image: z
     .any()
@@ -37,7 +35,7 @@ const formSchema = z.object({
 });
 
 export function CreateCategory() {
-  const [loading , setloading] =useState(false)
+  const [loading, setloading] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,31 +53,25 @@ export function CreateCategory() {
       image: imageFile,
     };
     const fromData = new FormData();
-    fromData.append('name' , finalData.name);
-    fromData.append("image"  , finalData.image)
+    fromData.append("name", finalData.name);
+    fromData.append("image", finalData.image);
 
     try {
-      setloading(true)
-      const res =  await api.post('/category/create-category'  , fromData , {
-        headers:{
-          Authorization:`Bearar ${"23459ujalskdjluakjt"}`,
-          "Content-Type":"multipart/form-data"
-        }
-      })
-      if(res.status == 201) {
-        console.log(res.data)
+      setloading(true);
+      const res = await api.post("/category/create-category", fromData);
+      if (res.status == 201) {
+        console.log(res.data);
       }
     } catch (error) {
-      console.log(error)
-    }finally{
-      setloading(false)
+      console.log(error);
+    } finally {
+      setloading(false);
     }
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
         {/* NAME FIELD */}
         <FormField
           control={form.control}
@@ -114,9 +106,9 @@ export function CreateCategory() {
           )}
         />
 
-        <Button type="submit" >{
-          loading ? "loading ..." :"Create Category"
-          }</Button>
+        <Button type="submit">
+          {loading ? "loading ..." : "Create Category"}
+        </Button>
       </form>
     </Form>
   );
