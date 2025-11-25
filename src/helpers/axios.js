@@ -12,7 +12,7 @@ api.interceptors.request.use(
     if (!accesToken) {
       return config;
     }
-    config.headers.Authorization = `Bearar ${accesToken}`;
+   config.headers.Authorization = `Bearer ${accesToken}`;
     return config;
   },
   function (error) {
@@ -29,31 +29,29 @@ api.interceptors.response.use(
 
     if (error.response?.status === 410 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
         const response = await axios.post(
           "http://localhost:3000/api/v1/auth/refresh-token",
           {},
           { withCredentials: true }
         );
-
         if (response.status === 200) {
           const newToken = response.data.data.accesToken;
-          console.log("newToken", newToken);
-          localStorage.setItem("accesToken", newToken);
-
-          api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
-
+          localStorage.setItem("accesToken" , newToken);
+         axios.defaults.headers.common["Authorization"] = `Bearar ${newToken}`;
           return api(originalRequest);
         }
       } catch (refreshError) {
-        console.log(refreshError);
+        console.log(refreshError)
+        localStorage.removeItem("accesToken");
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }
-
+    
     return Promise.reject(error);
   }
 );
 
 export { api };
+
