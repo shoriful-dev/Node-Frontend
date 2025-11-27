@@ -5,6 +5,7 @@ import {
   AudioWaveform,
   BookOpen,
   Bot,
+  BotMessageSquare,
   Command,
   Frame,
   GalleryVerticalEnd,
@@ -92,34 +93,45 @@ const data = {
       items: [
         {
           title: "Create Brand",
-          url: "#",
+          url: "createbrand",
         },
         {
           title: "Brand List",
-          url: "#",
+          url: "brandlist",
         },
       ],
     },
     {
-      title: "Settings",
+      title: "Single V Product",
       url: "#",
-      icon: Settings2,
+
+      icon: Bot,
+      isActive: true,
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "Create Single Variant",
+          url: "createsvp",
         },
         {
-          title: "Team",
-          url: "#",
+          title: "Single Variant List",
+          url: "svplist",
+        },
+      ],
+    },
+    {
+      title: "Multiple V Product",
+      url: "#",
+
+      icon: BotMessageSquare,
+      isActive: true,
+      items: [
+        {
+          title: "Create Multiple Variant",
+          url: "createmvp",
         },
         {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          title: "Multiple Variant List",
+          url: "mvplist",
         },
       ],
     },
@@ -143,7 +155,7 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }) {
+function AppSidebar({ ...props }) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -160,3 +172,5 @@ export function AppSidebar({ ...props }) {
     </Sidebar>
   );
 }
+
+export default React.memo(AppSidebar) || AppSidebar;
