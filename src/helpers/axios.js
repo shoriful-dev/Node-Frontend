@@ -5,53 +5,61 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Add a request interceptor
+// Request Interceptor
 api.interceptors.request.use(
   function (config) {
-    const accesToken = localStorage.getItem("accesToken");
-    if (!accesToken) {
-      return config;
+    const accessToken = localStorage.getItem("accesToken");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
-   config.headers.Authorization = `Bearer ${accesToken}`;
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   }
 );
 
-// Add a response interceptor
+// Response Interceptor
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
 
+    // Token expired (use your actual backend status)
     if (error.response?.status === 410 && !originalRequest._retry) {
       originalRequest._retry = true;
+
       try {
         const response = await axios.post(
           "http://localhost:3000/api/v1/auth/refresh-token",
           {},
           { withCredentials: true }
         );
+
         if (response.status === 200) {
-          const newToken = response.data.data.accesToken;
-          localStorage.setItem("accesToken" , newToken);
-         axios.defaults.headers.common["Authorization"] = `Bearar ${newToken}`;
+          const newToken = response.data.data.accessToken;
+
+          // Store in localStorage
+          localStorage.setItem("accesToken", newToken);
+
+          // Update header for future requests
+          api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
+
+          // Update header for this retry request
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
           return api(originalRequest);
         }
       } catch (refreshError) {
-        console.log(refreshError)
+        console.error(refreshError);
         localStorage.removeItem("accesToken");
         window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }
-    
+
     return Promise.reject(error);
   }
 );
 
 export { api };
-
