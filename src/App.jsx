@@ -6,14 +6,15 @@ import { CreateCategory } from "./components/dashboard/CreateCategory";
 import EditCategory from "./components/dashboard/EditCategory";
 import CreateSubCategory from "./components/dashboard/subcategory/CreateSubCategory";
 
-import { CreateBrand } from "./components/dashboard/brand/Createbrand";
-import { ToastContainer, toast } from "react-toastify";
-import BrandList from "./components/dashboard/brand/BrandList";
-import CreateSingleVariantproduct from "./components/dashboard/singleVariantProuduct/CreateSingleVariantproduct";
-import SingleVariantProductList from "./components/dashboard/singleVariantProuduct/SingleVariantProductList";
-import MultiVariantProductList from "./components/dashboard/MultiVariantProduct/MultiVariantProductList";
-import CreateMultiVariantProudct from "./components/dashboard/MultiVariantProduct/CreateMultiVariantProudct";
 import React, { Suspense } from "react";
+import { ToastContainer } from "react-toastify";
+import BrandList from "./components/dashboard/brand/BrandList";
+import { CreateBrand } from "./components/dashboard/brand/Createbrand";
+import CreateMultiVariantProudct from "./components/dashboard/MultiVariantProduct/CreateMultiVariantProudct";
+import MultiVariantProductList from "./components/dashboard/MultiVariantProduct/MultiVariantProductList";
+import CreateSingleVariantproduct from "./components/dashboard/singleVariantProuduct/CreateSingleVariantproduct";
+import SingleProductView from "./components/dashboard/singleVariantProuduct/SingleProductView.jsx";
+import SingleVariantProductList from "./components/dashboard/singleVariantProuduct/SingleVariantProductList";
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/Login"));
 const Registration = React.lazy(() =>
@@ -47,6 +48,7 @@ function App() {
             <Route path="/brandlist" element={<BrandList />} />
             <Route path="/createsvp" element={<CreateSingleVariantproduct />} />
             <Route path="/svplist" element={<SingleVariantProductList />} />
+            <Route path="/svpview/:slug" element={<SingleProductView />} />
             <Route path="/createmvp" element={<CreateMultiVariantProudct />} />
             <Route path="/mvplist" element={<MultiVariantProductList />} />
             <Route path="*" element={"not found"} />

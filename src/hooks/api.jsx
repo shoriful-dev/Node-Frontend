@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../helpers/axios";
-import { Bounce, toast } from "react-toastify";
 import { successToast } from "../helpers/toast";
 // get all categories
 export const useGetAllCategories = () => {
@@ -98,5 +97,74 @@ export const useDeleteBrand = () => {
       // 🚀 invalidate brand list query
       queryClient.invalidateQueries({ queryKey: ["allbrand"] });
     },
+  });
+};
+
+//  create  product
+export const useCreateProduct = (reset) => {
+  return useMutation({
+    queryKey: ["crearteproduct"],
+    mutationFn: (values) => {
+      const formData = new FormData();
+      for (let key in values) {
+        if (key === "image") {
+          const files = values[key];
+          if (files && files.length > 0) {
+            // Loop through all selected images
+            for (let i = 0; i < files.length; i++) {
+              formData.append("image", files[i]); // multiple image upload
+            }
+          }
+        } else {
+          formData.append(key, values[key]);
+        }
+      }
+      return api.post("/product/create-product", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
+    onError: (error) => {
+      // An error happened!
+      console.log(error);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      successToast(" product created sucessfullly", data);
+    },
+    onSettled: () => {
+      reset();
+    },
+  });
+};
+
+// get producxt
+export const useproductlist = (type) => {
+  return useQuery({
+    queryKey: [`${type} product`],
+    queryFn: async () => {
+      if (type) {
+        const res = await api.get(`/product/getall-product?ptype=${type}`);
+        return res.data;
+      } else {
+        const res = await api.get("/product/getall-product");
+        return res.data;
+      }
+    },
+  });
+};
+
+// get single product
+export const usegetsingleproduct = (slug) => {
+  return useQuery({
+    queryKey: [`singleproduct`],
+    queryFn: async () => {
+      const res = await api.get(`/product/single-product`, {
+        params: { slug },
+      });
+      return res.data;
+    },
+    enabled:!!slug
   });
 };

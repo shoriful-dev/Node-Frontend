@@ -1,6 +1,6 @@
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,62 +14,62 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useGetAllbrand, useGetAllCategories } from "../../../hooks/api";
 import { useEffect, useState } from "react";
+import {
+  useCreateProduct,
+  useGetAllbrand,
+  useGetAllCategories,
+} from "../../../hooks/api";
 
-export default function CreateProductForm({
-  categories = [],
-  subCategories = [],
-  brands = [],
-}) {
+// ---------------------------------------------
+// ZOD SCHEMA (FIXED)
+// ---------------------------------------------
+const schema = z.object({
+  name: z.string().min(2),
+  description: z.string().min(10),
+
+  category: z.string(),
+  subCategory: z.string(),
+  brand: z.string(),
+
+  tag: z.array(z.string()).default([]),
+
+  manufactureCountry: z.string(),
+  rating: z.coerce.number().min(0).max(5),
+
+  warrantyInformation: z.string().optional(),
+  warrentyexpires: z.string(),
+
+  shippingInformation: z.string(),
+  sku: z.string(),
+
+  groupUnit: z.enum(["Box", "Packet", "Dozen", "Custom"]),
+  groupUnitQuantity: z.coerce.number(),
+
+  unit: z.enum(["Piece", "Kg", "Gram", "Packet", "Custom"]),
+
+  size: z.string(),
+  color: z.string(),
+
+  stock: z.coerce.number(),
+  retailPrice: z.coerce.number(),
+  wholesalePrice: z.coerce.number(),
+
+  alertQuantity: z.coerce.number(),
+  minimumOrderQuantity: z.coerce.number(),
+
+  variantType: z.string(),
+
+  image: z
+    .any()
+    .refine((files) => files instanceof FileList && files.length > 0, {
+      message: "Upload at least one image.",
+    }),
+});
+
+export default function CreateProductForm() {
   // ---------------------------------------------
-  // ZOD SCHEMA (FIXED)
-  // ---------------------------------------------
-  const schema = z.object({
-    name: z.string().min(2),
-    description: z.string().min(10),
-
-    category: z.string(),
-    subCategory: z.string(),
-    brand: z.string(),
-
-    tag: z.array(z.string()).default([]),
-
-    manufactureCountry: z.string(),
-    rating: z.coerce.number().min(0).max(5),
-
-    warrantyInformation: z.string().optional(),
-    warrentyexpires: z.string(),
-
-    shippingInformation: z.string(),
-    sku: z.string(),
-
-    groupUnit: z.enum(["Box", "Packet", "Dozen", "Custom"]),
-    groupUnitQuantity: z.coerce.number(),
-
-    unit: z.enum(["Piece", "Kg", "Gram", "Packet", "Custom"]),
-
-    size: z.string(),
-    color: z.string(),
-
-    stock: z.coerce.number(),
-    retailPrice: z.coerce.number(),
-    wholesalePrice: z.coerce.number(),
-
-    alertQuantity: z.coerce.number(),
-    minimumOrderQuantity: z.coerce.number(),
-
-    variantType: z.string(),
-
-    images: z
-      .any()
-      .refine((files) => files instanceof FileList && files.length > 0, {
-        message: "Upload at least one image.",
-      }),
-  });
-
-  // ---------------------------------------------
-  // react-hook-form
+  // React Hook Form
   // ---------------------------------------------
   const form = useForm({
     resolver: zodResolver(schema),
@@ -86,40 +86,43 @@ export default function CreateProductForm({
       warrentyexpires: "",
       shippingInformation: "",
       sku: "",
-      groupUnit: "",
-      groupUnitQuantity: 0,
-      unit: "",
+      groupUnit: "Box", // FIXED
+      groupUnitQuantity: 1,
+      unit: "Piece", // FIXED
       size: "",
       color: "",
       stock: 0,
       retailPrice: 0,
       wholesalePrice: 0,
       alertQuantity: 0,
-      minimumOrderQuantity: 0,
+      minimumOrderQuantity: 1,
       variantType: "singleVariant",
-      images: undefined,
+      image: undefined,
     },
   });
 
   const [subcategoryList, setsubcategoyList] = useState([]);
+
   const { data: categoryData, isPending: categorypending } =
     useGetAllCategories();
-  // fetch all brand
   const { data: brandData, isPending: brandpending } = useGetAllbrand();
+  const singleProduct = useCreateProduct(()=>form.reset());
 
-  // find subcategory selected category id
+  // Watch category to update subcategories
   useEffect(() => {
-    if (form.watch("category")) {
-      const scategory = categoryData?.data?.find(
-        (item) => item._id == form.watch("category")
-      );
-      setsubcategoyList(scategory.subCategory);
-    }
-  }, [form.watch("category")]);
+    const selectedCategory = categoryData?.data?.find(
+      (item) => item._id === form.watch("category")
+    );
+
+    setsubcategoyList(selectedCategory?.subCategory || []);
+  }, [form.watch("category"), categoryData]);
+
+  // ---------------------------------------------
+  // Submit Handler
+  // ---------------------------------------------
   const onSubmit = (values) => {
-    console.log("PRODUCT DATA:", values);
+    singleProduct.mutate(values);
   };
-  console.log(subcategoryList);
 
   // ---------------------------------------------
   // UI
@@ -157,18 +160,18 @@ export default function CreateProductForm({
           )}
         />
 
-        {/* IMAGES */}
+        {/* IMAGE (FIXED name=image) */}
         <FormField
           control={form.control}
-          name="images"
+          name="image"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Images</FormLabel>
               <FormControl>
                 <Input
                   type="file"
+                  accept="image/*"
                   multiple
-                  accept="image/png,image/jpeg,image/jpg"
                   onChange={(e) => field.onChange(e.target.files)}
                 />
               </FormControl>
@@ -205,15 +208,19 @@ export default function CreateProductForm({
 
         {/* SUB CATEGORY */}
         <FormField
-          disabled={subcategoryList?.length == 0 ? true : false}
           control={form.control}
           name="subCategory"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Sub Category</FormLabel>
               <FormControl>
-                <select className="border p-2 w-full rounded" {...field}>
-                  {subcategoryList?.map((sub) => (
+                <select
+                  className="border p-2 w-full rounded"
+                  {...field}
+                  disabled={subcategoryList.length === 0}
+                >
+                  <option value="">Select Subcategory</option>
+                  {subcategoryList.map((sub) => (
                     <option key={sub._id} value={sub._id}>
                       {sub.name}
                     </option>
@@ -227,14 +234,17 @@ export default function CreateProductForm({
 
         {/* BRAND */}
         <FormField
-          disabled={brandpending}
           control={form.control}
           name="brand"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Brand</FormLabel>
               <FormControl>
-                <select className="border p-2 w-full rounded" {...field}>
+                <select
+                  disabled={brandpending}
+                  className="border p-2 w-full rounded"
+                  {...field}
+                >
                   <option value="">Select Brand</option>
                   {brandData?.data?.map((b) => (
                     <option key={b._id} value={b._id}>
@@ -257,7 +267,6 @@ export default function CreateProductForm({
               <FormLabel>Unit</FormLabel>
               <FormControl>
                 <select className="border p-2 w-full rounded" {...field}>
-                  <option value="">Select Unit</option>
                   <option value="Piece">Piece</option>
                   <option value="Kg">Kg</option>
                   <option value="Gram">Gram</option>
@@ -265,7 +274,6 @@ export default function CreateProductForm({
                   <option value="Custom">Custom</option>
                 </select>
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -279,14 +287,12 @@ export default function CreateProductForm({
               <FormLabel>Group Unit</FormLabel>
               <FormControl>
                 <select className="border p-2 w-full rounded" {...field}>
-                  <option value="">Select Group Unit</option>
                   <option value="Box">Box</option>
                   <option value="Packet">Packet</option>
                   <option value="Dozen">Dozen</option>
                   <option value="Custom">Custom</option>
                 </select>
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -300,6 +306,18 @@ export default function CreateProductForm({
               <FormLabel>Group Unit Quantity</FormLabel>
               <FormControl>
                 <Input type="number" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="warrentyexpires"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Warranty Expires</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -316,22 +334,20 @@ export default function CreateProductForm({
               <FormControl>
                 <Input {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
 
-        {/* sku */}
+        {/* SKU */}
         <FormField
           control={form.control}
           name="sku"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>sku</FormLabel>
+              <FormLabel>SKU</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -346,7 +362,6 @@ export default function CreateProductForm({
               <FormControl>
                 <Input {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -361,7 +376,6 @@ export default function CreateProductForm({
               <FormControl>
                 <Input type="number" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -376,7 +390,6 @@ export default function CreateProductForm({
               <FormControl>
                 <Input type="number" step="0.01" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -391,12 +404,11 @@ export default function CreateProductForm({
               <FormControl>
                 <Input type="number" step="0.01" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
 
-        {/* MINIMUM ORDER QUANTITY */}
+        {/* MIN ORDER QUANTITY */}
         <FormField
           control={form.control}
           name="minimumOrderQuantity"
@@ -406,12 +418,13 @@ export default function CreateProductForm({
               <FormControl>
                 <Input type="number" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit">Create Product</Button>
+        <Button type="submit">
+          {singleProduct.isPending ? "Loading..." : "Create Product"}
+        </Button>
       </form>
     </Form>
   );

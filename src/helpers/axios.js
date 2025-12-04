@@ -51,7 +51,7 @@ api.interceptors.response.use(
           return api(originalRequest);
         }
       } catch (refreshError) {
-        console.error(refreshError);
+        console.error("axiox interceptor eeror " , refreshError);
         localStorage.removeItem("accesToken");
         window.location.href = "/login";
         return Promise.reject(refreshError);
@@ -63,3 +63,4 @@ api.interceptors.response.use(
 );
 
 export { api };
+
