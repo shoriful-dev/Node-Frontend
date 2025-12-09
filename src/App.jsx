@@ -15,6 +15,8 @@ import MultiVariantProductList from "./components/dashboard/MultiVariantProduct/
 import CreateSingleVariantproduct from "./components/dashboard/singleVariantProuduct/CreateSingleVariantproduct";
 import SingleProductView from "./components/dashboard/singleVariantProuduct/SingleProductView.jsx";
 import SingleVariantProductList from "./components/dashboard/singleVariantProuduct/SingleVariantProductList";
+import CreateVariant from "./components/dashboard/Variant/CreateVariant.jsx";
+import VariantList from "./components/dashboard/Variant/VariantList.jsx";
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/Login"));
 const Registration = React.lazy(() =>
@@ -51,6 +53,8 @@ function App() {
             <Route path="/svpview/:slug" element={<SingleProductView />} />
             <Route path="/createmvp" element={<CreateMultiVariantProudct />} />
             <Route path="/mvplist" element={<MultiVariantProductList />} />
+            <Route path="/createVariant" element={<CreateVariant />} />
+            <Route path="/variantList" element={<VariantList />} />
             <Route path="*" element={"not found"} />
           </Route>
           {/* auth */}

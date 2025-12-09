@@ -135,6 +135,24 @@ const data = {
         },
       ],
     },
+     {
+      title: "Variant",
+      url: "#",
+
+      icon: BotMessageSquare,
+      isActive: true,
+      items: [
+        {
+          title: "Create  Variant",
+          url: "createVariant",
+        },
+        {
+          title: " Variant List",
+          url: "variantList",
+        },
+      ],
+    },
+    
   ],
   projects: [
     {

@@ -168,3 +168,40 @@ export const usegetsingleproduct = (slug) => {
     enabled:!!slug
   });
 };
+
+
+export const usecaratevariant = (reset) => {
+  return useMutation({
+    queryKey: ["createvariant"],
+    mutationFn: (values) => {
+      const formData = new FormData();
+      for (let key in values) {
+        if (key === "image") {
+          const files = values[key];
+          if (files && files.length > 0) {
+            // Loop through all selected images
+            for (let i = 0; i < files.length; i++) {
+              formData.append("image", files[i]); // multiple image upload
+            }
+          }
+        } else {
+          formData.append(key, values[key]);
+        }
+      }
+      return api.post("/variant/create-variant", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
+    onError: (error) => {
+      // An error happened!
+      console.log(error);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      successToast(" Variant created sucessfullly", data);
+    },
+    
+  });
+};
