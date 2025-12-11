@@ -165,10 +165,9 @@ export const usegetsingleproduct = (slug) => {
       });
       return res.data;
     },
-    enabled:!!slug
+    enabled: !!slug,
   });
 };
-
 
 export const usecaratevariant = (reset) => {
   return useMutation({
@@ -202,6 +201,16 @@ export const usecaratevariant = (reset) => {
       console.log(data);
       successToast(" Variant created sucessfullly", data);
     },
-    
+  });
+};
+
+// get variant list
+export const usevariantlist = () => {
+  return useQuery({
+    queryKey: [`variantlist`],
+    queryFn: async () => {
+      const res = await api.get(`/variant/getall-variant`);
+      return res.data;
+    },
   });
 };

@@ -23,6 +23,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
+    console.log("error" ,error);
     const originalRequest = error.config;
 
     // Token expired (use your actual backend status)
@@ -38,7 +39,7 @@ api.interceptors.response.use(
 
         if (response.status === 200) {
           const newToken = response.data.data.accessToken;
-
+          console.log("newToken", newToken);
           // Store in localStorage
           localStorage.setItem("accesToken", newToken);
 
@@ -51,7 +52,7 @@ api.interceptors.response.use(
           return api(originalRequest);
         }
       } catch (refreshError) {
-        console.error("axiox interceptor eeror " , refreshError);
+        console.error("axiox interceptor eeror ", refreshError);
         localStorage.removeItem("accesToken");
         window.location.href = "/login";
         return Promise.reject(refreshError);
