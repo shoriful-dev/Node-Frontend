@@ -17,11 +17,12 @@ import {
 } from "@/components/ui/sidebar"
 
 export function NavMain({
-  items
+  items,
+  moduleName
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>{moduleName}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible

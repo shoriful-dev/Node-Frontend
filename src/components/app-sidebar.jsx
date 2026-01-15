@@ -56,7 +56,7 @@ const data = {
       title: "Category",
       url: "#",
       icon: SquareTerminal,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: "Create Category",
@@ -73,7 +73,7 @@ const data = {
       title: "Sub-Category",
       url: "#",
       icon: Bot,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: "Create sub Category",
@@ -89,7 +89,7 @@ const data = {
       title: "Brand",
       url: "#",
       icon: BookOpen,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: "Create Brand",
@@ -106,7 +106,7 @@ const data = {
       url: "#",
 
       icon: Bot,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: "Create Single Variant",
@@ -123,7 +123,7 @@ const data = {
       url: "#",
 
       icon: BotMessageSquare,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: "Create Multiple Variant",
@@ -135,12 +135,12 @@ const data = {
         },
       ],
     },
-     {
+    {
       title: "Variant",
       url: "#",
 
       icon: BotMessageSquare,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: "Create  Variant",
@@ -152,23 +152,147 @@ const data = {
         },
       ],
     },
-    
+
   ],
-  projects: [
+  Order: [
     {
-      name: "Design Engineering",
+      title: "Order",
       url: "#",
-      icon: Frame,
+      icon: SquareTerminal,
+      isActive: false,
+      items: [
+        {
+          title: "All Order",
+          url: "createcategory",
+        },
+        {
+          title: "All Pending Order",
+          url: "categorylist",
+        },
+        {
+          title: "All Cancled Order",
+          url: "categorylist",
+        },
+      ],
     },
     {
-      name: "Sales & Marketing",
+      title: "Qurier Pending Order",
       url: "#",
-      icon: PieChart,
+      icon: SquareTerminal,
+      isActive: false,
+      items: [
+        {
+          title: "All Order",
+          url: "createcategory",
+        },
+        {
+          title: "All Pending Order",
+          url: "categorylist",
+        },
+        {
+          title: "All Cancled Order",
+          url: "categorylist",
+        },
+      ],
     },
     {
-      name: "Travel",
+      title: "Qurier Return",
       url: "#",
-      icon: Map,
+      icon: SquareTerminal,
+      isActive: false,
+      items: [
+
+        {
+          title: "Stock Adjustment",
+          url: "categorylist",
+        },
+
+      ],
+    },
+  ],
+
+  sms: [
+    {
+      title: "SMS ",
+      url: "#",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
+        {
+          title: "Employee",
+          url: "createcategory",
+        },
+        {
+          title: "customer",
+          url: "categorylist",
+        },
+
+      ],
+    },
+
+
+  ],
+
+  role: [
+    {
+      title: "Role ",
+      url: "#",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
+        {
+          title: "Create  Role",
+          url: "createcategory",
+        },
+        {
+          title: "Role List",
+          url: "categorylist",
+        },
+
+      ],
+    },
+
+
+  ],
+  permissons: [
+    {
+      title: "Permissons ",
+      url: "#",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
+        {
+          title: "Create permisson",
+          url: "createcategory",
+        },
+        {
+          title: "permisson List",
+          url: "categorylist",
+        },
+
+      ],
+    },
+
+
+  ],
+
+  userPermissions: [
+    {
+      title: "User Permisson ",
+      url: "#",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
+        {
+          title: "Create user permisson",
+          url: "createcategory",
+        },
+        {
+          title: "User permisson List",
+          url: "categorylist",
+        },
+
+      ],
     },
   ],
 };
@@ -180,8 +304,13 @@ function AppSidebar({ ...props }) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain moduleName="Core Module" items={data.navMain} />
+        <NavMain moduleName="Order Management" items={data.Order} />
+        <NavMain moduleName="SMS Management" items={data.sms} />
+        <NavMain moduleName="Role" items={data.role} />
+        <NavMain moduleName="Permissons" items={data.permissons} />
+        <NavMain moduleName="User Permissons" items={data.userPermissions} />
+
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
