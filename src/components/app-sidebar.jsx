@@ -1,22 +1,17 @@
 "use client";
 
-import * as React from "react";
 import {
   AudioWaveform,
   BookOpen,
   Bot,
   BotMessageSquare,
   Command,
-  Frame,
   GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
+  SquareTerminal
 } from "lucide-react";
+import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
@@ -152,7 +147,6 @@ const data = {
         },
       ],
     },
-
   ],
   Order: [
     {
@@ -163,7 +157,7 @@ const data = {
       items: [
         {
           title: "All Order",
-          url: "createcategory",
+          url: "allorder",
         },
         {
           title: "All Pending Order",
@@ -201,12 +195,10 @@ const data = {
       icon: SquareTerminal,
       isActive: false,
       items: [
-
         {
           title: "Stock Adjustment",
           url: "categorylist",
         },
-
       ],
     },
   ],
@@ -226,11 +218,8 @@ const data = {
           title: "customer",
           url: "categorylist",
         },
-
       ],
     },
-
-
   ],
 
   role: [
@@ -248,11 +237,8 @@ const data = {
           title: "Role List",
           url: "categorylist",
         },
-
       ],
     },
-
-
   ],
   permissons: [
     {
@@ -269,11 +255,8 @@ const data = {
           title: "permisson List",
           url: "categorylist",
         },
-
       ],
     },
-
-
   ],
 
   userPermissions: [
@@ -291,7 +274,6 @@ const data = {
           title: "User permisson List",
           url: "categorylist",
         },
-
       ],
     },
   ],

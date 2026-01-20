@@ -214,3 +214,49 @@ export const usevariantlist = () => {
     },
   });
 };
+
+// get all order
+export const usegetallorder = () => {
+  return useQuery({
+    queryKey: ["allOrder"],
+    queryFn: async () => {
+      const res = await api.get("/order/getorderbystatus");
+      return res.data;
+    },
+  });
+};
+// get order details by phone number
+export const usegetorder = (invoice) => {
+  return useQuery({
+    queryKey: ["order"],
+    queryFn: async () => {
+      const res = await api.get("/order/getAllorder", {
+        params: {
+          invoice,
+        },
+      });
+      return res.data;
+    },
+    enabled: !!invoice,
+  });
+};
+
+export const useUpdateOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, status }) => {
+      return api.put(`/order/orderupdate/${id}`, {
+        status,
+      });
+    },
+    onSuccess: () => {
+      successToast("Order updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["order"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+};
+

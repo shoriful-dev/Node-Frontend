@@ -12,6 +12,8 @@ import BrandList from "./components/dashboard/brand/BrandList";
 import { CreateBrand } from "./components/dashboard/brand/Createbrand";
 import CreateMultiVariantProudct from "./components/dashboard/MultiVariantProduct/CreateMultiVariantProudct";
 import MultiVariantProductList from "./components/dashboard/MultiVariantProduct/MultiVariantProductList";
+import Allorder from "./components/dashboard/order/Allorder.jsx";
+import OrderDetails from "./components/dashboard/order/OrderDetails.jsx";
 import CreateSingleVariantproduct from "./components/dashboard/singleVariantProuduct/CreateSingleVariantproduct";
 import SingleProductView from "./components/dashboard/singleVariantProuduct/SingleProductView.jsx";
 import SingleVariantProductList from "./components/dashboard/singleVariantProuduct/SingleVariantProductList";
@@ -55,6 +57,10 @@ function App() {
             <Route path="/mvplist" element={<MultiVariantProductList />} />
             <Route path="/createVariant" element={<CreateVariant />} />
             <Route path="/variantList" element={<VariantList />} />
+            {/* order routes */}
+            <Route path="/allorder" element={<Allorder />} />
+            <Route path="/orderdetails/:phone" element={<OrderDetails />} />
+
             <Route path="*" element={"not found"} />
           </Route>
           {/* auth */}
