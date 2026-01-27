@@ -216,13 +216,18 @@ export const usevariantlist = () => {
 };
 
 // get all order
-export const usegetallorder = () => {
+export const usegetallorder = (status) => {
   return useQuery({
     queryKey: ["allOrder"],
     queryFn: async () => {
-      const res = await api.get("/order/getorderbystatus");
+      const res = await api.get("/order/getorderbystatus", {
+        params: {
+          status,
+        },
+      });
       return res.data;
     },
+    enabled: !!status,
   });
 };
 // get order details by phone number
@@ -260,3 +265,25 @@ export const useUpdateOrder = () => {
   });
 };
 
+// send courier
+
+export const useSendCourier = () => {
+  // const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (orderid) => {
+      console.log(orderid)
+      return api.post(`/courier/create-order`, {
+        orderid: orderid,
+      });
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      successToast("Courier  updated successfully");
+      // queryClient.invalidateQueries({ queryKey: ["order"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+};

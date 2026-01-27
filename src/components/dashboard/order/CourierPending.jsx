@@ -1,20 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
-import { Eye } from "lucide-react";
-import { Link } from "react-router";
-import { usegetallorder } from "../../../hooks/api";
+import { usegetallorder, useSendCourier } from "../../../hooks/api";
 
-const Allorder = () => {
-  const { data, isPending, isError, refetch } = usegetallorder("Pending");
+const AllCourierPending = () => {
+  const { data, isPending, isError, refetch } =
+    usegetallorder("courierPending");
+    const courierMutaion = useSendCourier()
   if (isPending) return <h1> laoding ..</h1>;
+
+  //   handleSendCourier
+  const handleSendCourier = (id)=> {
+    courierMutaion.mutate(id)
+    // console.log(id)
+  }
 
   return (
     <Card className="w-full max-w-full mx-auto mt-10 shadow-lg rounded-2xl">
@@ -61,15 +67,15 @@ const Allorder = () => {
                   </TableCell>
 
                   <TableCell>
-                    <Link to={`/orderdetails/${order.invoiceId}`}>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="rounded-xl"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                    </Link>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disable={courierMutaion.isPending}
+                      onClick={() => handleSendCourier(order._id)}
+                      className="rounded"
+                    >
+                      {courierMutaion.isPending ? "loading .." : "Send Courier"}
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -81,4 +87,4 @@ const Allorder = () => {
   );
 };
 
-export default Allorder;
+export default AllCourierPending;

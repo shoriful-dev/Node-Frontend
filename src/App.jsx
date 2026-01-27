@@ -13,6 +13,7 @@ import { CreateBrand } from "./components/dashboard/brand/Createbrand";
 import CreateMultiVariantProudct from "./components/dashboard/MultiVariantProduct/CreateMultiVariantProudct";
 import MultiVariantProductList from "./components/dashboard/MultiVariantProduct/MultiVariantProductList";
 import Allorder from "./components/dashboard/order/Allorder.jsx";
+import AllCourierPending from "./components/dashboard/order/CourierPending.jsx";
 import OrderDetails from "./components/dashboard/order/OrderDetails.jsx";
 import CreateSingleVariantproduct from "./components/dashboard/singleVariantProuduct/CreateSingleVariantproduct";
 import SingleProductView from "./components/dashboard/singleVariantProuduct/SingleProductView.jsx";
@@ -60,6 +61,10 @@ function App() {
             {/* order routes */}
             <Route path="/allorder" element={<Allorder />} />
             <Route path="/orderdetails/:phone" element={<OrderDetails />} />
+            <Route
+              path="/courier-pending"
+              element={<AllCourierPending />}
+            />
 
             <Route path="*" element={"not found"} />
           </Route>

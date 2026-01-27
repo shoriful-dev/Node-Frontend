@@ -159,14 +159,6 @@ const data = {
           title: "All Order",
           url: "allorder",
         },
-        {
-          title: "All Pending Order",
-          url: "categorylist",
-        },
-        {
-          title: "All Cancled Order",
-          url: "categorylist",
-        },
       ],
     },
     {
@@ -176,16 +168,8 @@ const data = {
       isActive: false,
       items: [
         {
-          title: "All Order",
-          url: "createcategory",
-        },
-        {
-          title: "All Pending Order",
-          url: "categorylist",
-        },
-        {
-          title: "All Cancled Order",
-          url: "categorylist",
+          title: "All Qurier Pending Order",
+          url: "courier-pending",
         },
       ],
     },
