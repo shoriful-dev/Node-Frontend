@@ -272,7 +272,7 @@ export const useSendCourier = () => {
 
   return useMutation({
     mutationFn: (orderid) => {
-      console.log(orderid)
+      console.log(orderid);
       return api.post(`/courier/create-order`, {
         orderid: orderid,
       });
@@ -285,5 +285,17 @@ export const useSendCourier = () => {
     onError: (error) => {
       console.log(error);
     },
+  });
+};
+
+// sucess Courie
+export const useSucessCourier = () => {
+  return useQuery({
+    queryKey: ["success_courier"],
+    queryFn: async () => {
+      const res = await api.get("/order/couriersucess");
+      return res.data;
+    },
+
   });
 };

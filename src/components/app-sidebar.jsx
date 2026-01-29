@@ -171,6 +171,10 @@ const data = {
           title: "All Qurier Pending Order",
           url: "courier-pending",
         },
+        {
+          title: " Qurier Delivery Status",
+          url: "courierdelivery",
+        },
       ],
     },
     {
