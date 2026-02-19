@@ -256,7 +256,7 @@ const data = {
       items: [
         {
           title: "Create user permisson",
-          url: "createcategory",
+          url: "userpermission",
         },
         {
           title: "User permisson List",

@@ -296,6 +296,49 @@ export const useSucessCourier = () => {
       const res = await api.get("/order/couriersucess");
       return res.data;
     },
+  });
+};
 
+//  list  user
+export const listedUser = () => {
+  return useQuery({
+    queryKey: ["listeduser"],
+    queryFn: async () => {
+      const res = await api.get("/adduser/userlist");
+      return res.data.data;
+    },
+  });
+};
+
+export const permissionList = () => {
+  return useQuery({
+    queryKey: ["plist"],
+    queryFn: async () => {
+      const res = await api.get("/permission/get-permisson");
+      return res.data.data;
+    },
+  });
+};
+
+// /permission/adduserpermission
+
+export const useAdduserPermission = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload) => {
+      return api.put(`permission/adduserpermission`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }); // ✅ api.put() এর closing ) ছিল না
+    }, // ✅ mutationFn এর closing
+    onSuccess: (data) => {
+      successToast("Permission updated successfully", data);
+      // queryClient.invalidateQueries({ queryKey: ["userPermission"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
 };

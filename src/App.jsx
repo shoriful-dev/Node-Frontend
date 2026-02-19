@@ -19,6 +19,7 @@ import OrderDetails from "./components/dashboard/order/OrderDetails.jsx";
 import CreateSingleVariantproduct from "./components/dashboard/singleVariantProuduct/CreateSingleVariantproduct";
 import SingleProductView from "./components/dashboard/singleVariantProuduct/SingleProductView.jsx";
 import SingleVariantProductList from "./components/dashboard/singleVariantProuduct/SingleVariantProductList";
+import UserPermission from "./components/dashboard/userpermission/Userpermission.jsx";
 import CreateVariant from "./components/dashboard/Variant/CreateVariant.jsx";
 import VariantList from "./components/dashboard/Variant/VariantList.jsx";
 const Home = React.lazy(() => import("./pages/Home"));
@@ -64,6 +65,8 @@ function App() {
             <Route path="/orderdetails/:phone" element={<OrderDetails />} />
             <Route path="/courier-pending" element={<AllCourierPending />} />
             <Route path="/courierdelivery" element={<CourierDelivery />} />
+            {/* user role and permisson */}
+            <Route path="/userpermission" element={<UserPermission />} />
 
             <Route path="*" element={"not found"} />
           </Route>
