@@ -25,10 +25,10 @@ import VariantList from "./components/dashboard/Variant/VariantList.jsx";
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/Login"));
 const Registration = React.lazy(() =>
-  import("./pages/Registration").then((c) => c.RegistrationForm)
+  import("./pages/Registration").then((c) => c.RegistrationForm),
 );
-const CategoryList = React.lazy(() =>
-  import("./components/dashboard/CategoryList.jsx")
+const CategoryList = React.lazy(
+  () => import("./components/dashboard/CategoryList.jsx"),
 );
 
 function App() {

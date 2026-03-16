@@ -7,7 +7,7 @@ import {
   BotMessageSquare,
   Command,
   GalleryVerticalEnd,
-  SquareTerminal
+  SquareTerminal,
 } from "lucide-react";
 import * as React from "react";
 
@@ -280,7 +280,6 @@ function AppSidebar({ ...props }) {
         <NavMain moduleName="Role" items={data.role} />
         <NavMain moduleName="Permissons" items={data.permissons} />
         <NavMain moduleName="User Permissons" items={data.userPermissions} />
-
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
